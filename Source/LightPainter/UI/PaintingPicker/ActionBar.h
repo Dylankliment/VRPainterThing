@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
+#include "PaintingPicker.h"
 
 #include "ActionBar.generated.h"
 
@@ -18,6 +19,7 @@ class LIGHTPAINTER_API UActionBar : public UUserWidget
 public:
 	bool Initialize() override;
 	
+	void SetParentPicker(APaintingPicker* NewParentPicker) { ParentPicker = NewParentPicker; }
 	
 protected:
 
@@ -33,4 +35,7 @@ protected:
 
 	UFUNCTION()
 	void DeleteButtonClicked();
+
+	UPROPERTY()
+	APaintingPicker* ParentPicker;
 };

@@ -21,3 +21,4 @@ void UPaintingGridCard::CardButtonClicked()
 	// TODO: Refactor out magic string
 	UGameplayStatics::OpenLevel(GetWorld(), TEXT("Canvas"), true, "SlotName=" + PaintingName);
 }
+

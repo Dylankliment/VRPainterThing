@@ -21,6 +21,7 @@ public:
 
 	void SetPaintingName(FString NewPaintingName);
 
+
 protected:
 	
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (BindWidget))

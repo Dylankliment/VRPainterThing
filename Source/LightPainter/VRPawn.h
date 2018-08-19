@@ -31,11 +31,19 @@ private:
 	void RightTriggeredPressed() { if (RightHandController) RightHandController->TriggerPressed(); }
 	void RightTriggeredReleased() { if (RightHandController) RightHandController->TriggerReleased(); }
 
-	void Save();
+	void PaginateRightAxisInput(float AxisValue);
+
+	void UpdateCurrentPage(int32 Offset);
 
 	// Config
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AHandControllerBase> HandControllerBaseClass;
+	TSubclassOf<AHandControllerBase> RightHandControllerBaseClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AHandControllerBase> LeftHandControllerBaseClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	float PaginationThumbstickTreshold = .6f;
 
 	// Components
 	UPROPERTY()
@@ -48,5 +56,11 @@ private:
 	UPROPERTY()
 	class AHandControllerBase * RightHandController;
 
+	UPROPERTY()
+	class AHandControllerBase * LeftHandController;
+
 	// State
+
+	int32 LastPaginationOffset = 0;
+
 };

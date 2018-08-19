@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PaintingPicker.h"
-
+#include "Saving/PainterSaveGame.h"
 #include "Saving/PainterSaveGameIndex.h"
-#include "PaintingGrid.h"
+#include "ActionBar.h"
 
 // Sets default values
 APaintingPicker::APaintingPicker()
@@ -25,13 +25,81 @@ void APaintingPicker::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UPaintingGrid* PaintingGridWidget = Cast<UPaintingGrid>(PaintingGrid->GetUserWidgetObject());
-	if (!PaintingGridWidget) return;
-
-	int32 Index = 0;
-	for (FString SlotName : UPainterSaveGameIndex::Load()->GetSlotNames())
+	UActionBar* ActionBarWidget = Cast<UActionBar>(ActionBar->GetUserWidgetObject());
+	if (!ActionBarWidget)
 	{
-		PaintingGridWidget->AddPainting(Index, SlotName);
-		++Index;
+		return;
 	}
+	else
+	{
+		ActionBarWidget->SetParentPicker(this);
+	}
+	Refresh();
+
+}
+
+void APaintingPicker::AddPainting()
+{
+	UPainterSaveGame::Create();
+	Refresh();
+}
+
+void APaintingPicker::ToggleDeleteMode()
+{
+	/*if (DeleteMode == false)
+	{
+		DeleteMode = true;
+	}
+	else
+	{
+		DeleteMode = false;
+	}*/
+
+	if (!GetPaintingGrid()) return;
+
+	GetPaintingGrid()->ClearPaintings();
+}
+
+void APaintingPicker::UpdateCurrentPage(int32 Offset)
+{
+	CurrentPage += FMath::Clamp(CurrentPage + Offset, 0, GetNumberOfPages() - 1);
+
+	Refresh();
+}
+
+void APaintingPicker::RefreshSlots()
+{	
+	if (!GetPaintingGrid()) return ;
+
+
+	GetPaintingGrid()->ClearPaintings();
+
+	int32 StartOffset = CurrentPage * GetPaintingGrid()->GetNumberOfSlots();
+	auto SlotNames = UPainterSaveGameIndex::Load()->GetSlotNames();
+	for (int32 i = 0; i < GetPaintingGrid()->GetNumberOfSlots() && StartOffset + i < SlotNames.Num(); ++i)
+	{
+		GetPaintingGrid()->AddPainting(i, SlotNames[StartOffset + i]);
+	}	
+}
+
+void APaintingPicker::RefreshDots()
+{
+	if (!GetPaintingGrid()) return;
+
+	GetPaintingGrid()->ClearPaginationDots();
+
+	for (int32 i = 0; i < GetNumberOfPages(); ++i)
+	{
+		GetPaintingGrid()->AddPaginationDot(i == CurrentPage);
+	}
+}
+
+int32 APaintingPicker::GetNumberOfPages() const
+{
+	if (!GetPaintingGrid()) return 0;
+
+	int32 TotalNumberOfSlots = UPainterSaveGameIndex::Load()->GetSlotNames().Num();
+	int32 SlotsPerPage = GetPaintingGrid()->GetNumberOfSlots();
+	
+	return FMath::CeilToInt((float) TotalNumberOfSlots / SlotsPerPage);
 }

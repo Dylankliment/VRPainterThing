@@ -17,10 +17,10 @@ bool UActionBar::Initialize()
 
 void UActionBar::AddButtonClicked()
 {
-
+	if (ParentPicker) ParentPicker->AddPainting();
 }
 
 void UActionBar::DeleteButtonClicked()
 {
-
+	if (ParentPicker) ParentPicker->ToggleDeleteMode();
 }

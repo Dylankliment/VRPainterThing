@@ -19,6 +19,8 @@ void APaintingGameMode::InitGame(const FString & MapName, const FString & Option
 	
 }
 
+
+
 void APaintingGameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -37,6 +39,7 @@ void APaintingGameMode::Save()
 		Painting->SerializeFromWorld(GetWorld());
 		Painting->Save();
 	}
+
 }
 
 void APaintingGameMode::Load()
@@ -50,4 +53,11 @@ void APaintingGameMode::Load()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Game Slot not found: %s"), *SlotName);
 	}
+}
+
+void APaintingGameMode::SaveAndQuit()
+{
+	Save();
+
+	UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainMenu"));
 }
