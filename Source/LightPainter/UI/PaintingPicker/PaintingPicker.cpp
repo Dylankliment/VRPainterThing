@@ -46,15 +46,6 @@ void APaintingPicker::AddPainting()
 
 void APaintingPicker::ToggleDeleteMode()
 {
-	/*if (DeleteMode == false)
-	{
-		DeleteMode = true;
-	}
-	else
-	{
-		DeleteMode = false;
-	}*/
-
 	if (!GetPaintingGrid()) return;
 
 	GetPaintingGrid()->ClearPaintings();
@@ -62,7 +53,7 @@ void APaintingPicker::ToggleDeleteMode()
 
 void APaintingPicker::UpdateCurrentPage(int32 Offset)
 {
-	CurrentPage += FMath::Clamp(CurrentPage + Offset, 0, GetNumberOfPages() - 1);
+	CurrentPage = FMath::Clamp(CurrentPage + Offset, 0, GetNumberOfPages() - 1);
 
 	Refresh();
 }
@@ -90,7 +81,7 @@ void APaintingPicker::RefreshDots()
 
 	for (int32 i = 0; i < GetNumberOfPages(); ++i)
 	{
-		GetPaintingGrid()->AddPaginationDot(i == CurrentPage);
+		GetPaintingGrid()->AddPaginationDot(CurrentPage == i);
 	}
 }
 

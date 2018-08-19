@@ -57,8 +57,4 @@ private:
 
 	int32 CurrentPage = 0;
 
-	bool DeleteMode = false;
-
-
-
 };

@@ -63,6 +63,8 @@ void AVRPawn::PaginateRightAxisInput(float AxisValue)
 
 	if (PaginationOffset != LastPaginationOffset && PaginationOffset != 0)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Paginate %d"), PaginationOffset);
+
 		UpdateCurrentPage(PaginationOffset);
 	}
 	LastPaginationOffset = PaginationOffset;
